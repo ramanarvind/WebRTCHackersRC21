@@ -65,8 +65,8 @@ CyberMegaPhone.prototype.connect = function () {
 
 	let that = this;
 
-	//let socket = new JsSIP.WebSocketInterface('wss://' + this.host + ':8089/ws');
-    let socket = new JsSIP.WebSocketInterface('ws://' + this.host + ':5066/ws');
+	let socket = new JsSIP.WebSocketInterface('wss://' + this.host + ':8089/ws');
+    //let socket = new JsSIP.WebSocketInterface('ws://' + this.host + ':5066/ws');
 	let uri = 'sip:' + this.id + '@' + this.host;
 
 	let config = {
