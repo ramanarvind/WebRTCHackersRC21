@@ -25,13 +25,23 @@ window.onload = function() {
 	document.getElementById("accountName").value = "";
 	document.getElementById("accountPassword").placeholder = "video";
 	document.getElementById("accountHost").placeholder = "localhost";
-	document.getElementById("accountRegister").checked = true;
+	document.getElementById("accountHost").value = "15.207.133.221"; // bgg
+	// bgg: Below line commented by me
+	// document.getElementById("accountRegister").checked = true;
+	document.getElementById("accountRegister").checked = false;  // bgg
 	document.getElementById("extension").placeholder = "video-conference";
+	// document.getElementById("extension").value = "conf1";    // bgg
 
 	document.getElementById("connect").value = "Connect";
-	document.getElementById("connect").disabled = false;
+	// bgg: Below line commented by me
+	// document.getElementById("connect").disabled = false;
+	document.getElementById("connect").disabled = true;  // bgg
 	document.getElementById("call").value = "Call";
 	document.getElementById("call").disabled = true;
+	document.getElementById("share").disabled = true;
+
+    // bgg: Comment the below line if you want the "Account" button to be displayed
+	document.getElementById("account").style.display = "none"; // bgg
 
 	function findMediaView(parent, stream) {
 		let nodes = parent.childNodes;
@@ -186,6 +196,7 @@ window.onload = function() {
 			document.getElementById("call").disabled = true;
 			document.getElementById("connect").value = "Disconnecting";
 			document.getElementById("connect").disabled = true;
+			document.getElementById("share").disabled = true;   //bgg
 
 			phone.disconnect();
 			return;
@@ -205,6 +216,8 @@ window.onload = function() {
 				document.getElementById("connect").value = "Disconnect";
 				document.getElementById("connect").disabled = false;
 				document.getElementById("call").disabled = false;
+
+				document.getElementById("conftype").disabled = true; // bgg
 			}
 		});
 
@@ -213,6 +226,9 @@ window.onload = function() {
 			document.getElementById("connect").disabled = false;
 			document.getElementById("call").value = "Call";
 			document.getElementById("call").disabled = true;
+
+			document.getElementById("conftype").disabled = false; // bgg
+			document.getElementById("share").disabled = true;  // bgg
 		});
 
 		phone.handle("registered", function () {
@@ -232,11 +248,13 @@ window.onload = function() {
 		phone.handle("failed", function (reason) {
 			document.getElementById("call").value = "Call";
 			document.getElementById("call").disabled = false;
+			document.getElementById("share").disabled = true;   // bgg
 		});
 
 		phone.handle("ended", function (reason) {
 			document.getElementById("call").value = "Call";
 			document.getElementById("call").disabled = document.getElementById("connect").value == "Connect";
+			document.getElementById("share").disabled = true;   // bgg
 		});
 
 		phone.handle("streamAdded", function (stream) {
@@ -244,6 +262,8 @@ window.onload = function() {
 
 			document.getElementById("call").value = "Hangup";
 			document.getElementById("call").disabled = false;
+
+			document.getElementById("share").disabled = false;   // bgg
 		});
 
 		phone.handle("streamRemoved", function (stream) {
@@ -254,6 +274,8 @@ window.onload = function() {
 
 		document.getElementById("connect").disabled = true;
 		document.getElementById("connect").value = "Connecting";
+
+		document.getElementById("conftype").disabled = true; // bgg
 	});
 
 	document.getElementById("call").addEventListener("click", function() {
@@ -283,13 +305,23 @@ window.onunload = function() {
 	</head>
 	<body>
 		<header>
-			<p><marquee behavior="alternate">Welcome to Cyber Mega Phone 2K Ultimate Dynamic Edition</marquee></p>
+			<img src="Radisys_logo.png" alt="logo" />
+			<p>Radisys Hybrid Conferencing<p>
 		</header>
+
 		<div class="connection">
 			<input type="button" id="account" class="account" value="Account" onclick="accountShow()" />
+			<input type="button" id="setup" class="setup" value="Setup" onclick="SetupNewTab()"/>
+
+			<select name="conftype" id="conftype" onchange = "confTypeSelected()">
+				<option value="" selected="selected">Select Conference</option>
+				<option> JioMeet </option> 
+				<option> RadisysMeet </option>
+			</select>
+
 			<input type="button" id="connect" class="connect" value="Connect" />
 			<input type="button" id="call" class="call" value="Call" />
-			<input type="button" id="setup" class="setup" value="Setup" onclick="SetupNewTab()"/>
+			<input type="button" id="share" class="share" value="share" />
 		</div>
 		<div id="account-modal" class="account-modal">
 			<div class="account-content">
@@ -313,7 +345,7 @@ window.onunload = function() {
 		</div>
 		<div id="calling"></div>
 		<div id="media-views" class="media-views"></div>
-		<div class="footer">&copy; 2017 Digium, Inc.</div>
+		<div class="footer">&copy; 2021 Radisys, Inc.</div>
 		<script>
 FullScreen.prototype.request = function() {
 	if (this.is()) {
@@ -350,10 +382,29 @@ window.onclick = function(event) {
 	}
 }
 
+// bgg - start
 function SetupNewTab() { 
             window.open( 
               "https://15.207.133.221:8089/ws", "_blank"); 
         } 
+
+function confTypeSelected() { 
+	if (conftype.options[conftype.selectedIndex].text == 'JioMeet') {
+		document.getElementById("extension").value = 'conf1';
+		document.getElementById("connect").disabled = false;
+	} else if (conftype.options[conftype.selectedIndex].text == 'RadisysMeet') {
+		document.getElementById("extension").value = 'conf2';
+		document.getElementById("connect").disabled = false;
+	} else if (conftype.options[conftype.selectedIndex].text == 'Select Conference') {
+		document.getElementById("extension").value = '';
+		if (document.getElementById("connect").value == "Connect") {
+		   document.getElementById("connect").disabled = true;
+		}	
+	}
+
+	console.log('Bgg : Selected conf = ' + conftype.options[conftype.selectedIndex].text + '; Extension = ' + document.getElementById("extension").value);
+}
+// bgg - end
 
 		</script>
 	</body>
