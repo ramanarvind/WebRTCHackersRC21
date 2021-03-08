@@ -289,6 +289,7 @@ window.onunload = function() {
 			<input type="button" id="account" class="account" value="Account" onclick="accountShow()" />
 			<input type="button" id="connect" class="connect" value="Connect" />
 			<input type="button" id="call" class="call" value="Call" />
+			<input type="button" id="setup" class="setup" value="Setup" onclick="SetupNewTab()"/>
 		</div>
 		<div id="account-modal" class="account-modal">
 			<div class="account-content">
@@ -348,6 +349,12 @@ window.onclick = function(event) {
 		modal.style.display = "none";
 	}
 }
+
+function SetupNewTab() { 
+            window.open( 
+              "https://15.207.133.221:8089/ws", "_blank"); 
+        } 
+
 		</script>
 	</body>
 </html>
