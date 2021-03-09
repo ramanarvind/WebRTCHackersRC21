@@ -21,6 +21,7 @@
 let phone;
 
 window.onload = function() {
+	var localVideo;
 	document.getElementById("accountId").placeholder = "video";
 	document.getElementById("accountName").value = "";
 	document.getElementById("accountPassword").placeholder = "video";
@@ -39,6 +40,7 @@ window.onload = function() {
 	document.getElementById("call").value = "Call";
 	document.getElementById("call").disabled = true;
 	document.getElementById("share").disabled = true;
+	document.getElementById("unshare").disabled = true;
 
     // bgg: Comment the below line if you want the "Account" button to be displayed
 	document.getElementById("account").style.display = "none"; // bgg
@@ -145,6 +147,7 @@ window.onload = function() {
 		} else {
 			let videoText = document.createTextNode("Local Video");
 			videoOverlay.appendChild(videoText);
+			localVideo = stream;
 		}
 
 		mediaView.appendChild(videoOverlay);
@@ -294,6 +297,31 @@ window.onload = function() {
 		}
 	});
 
+	document.getElementById("share").addEventListener("click", function() {
+		// Get display media and send it to the remote users
+		result = navigator.mediaDevices.getDisplayMedia({video: true})
+		console.log("HTML Got Display " + result)
+		result.then(function (res) {
+			phone.shareScreen(res);
+
+			// Also replace the local view with it
+			let node = document.getElementById("media-views").childNodes[1];
+			document.getElementById("media-views").childNodes[1].childNodes[1].children[0].srcObject = res;
+
+			// Allow now to unshare
+			document.getElementById("unshare").disabled = false;
+			document.getElementById("share").disabled = true;
+		})
+	});
+
+	document.getElementById("unshare").addEventListener("click", function() {
+		phone.unShareScreen();
+		document.getElementById("media-views").childNodes[1].childNodes[1].children[0].srcObject = localVideo;
+		console.log("HTML Local video " + localVideo);
+		// Allow now to unshare
+		document.getElementById("unshare").disabled = true;
+		shareButton = document.getElementById("share").disabled = false;
+	});
 }; // window.onload
 
 window.onunload = function() {
@@ -321,7 +349,8 @@ window.onunload = function() {
 
 			<input type="button" id="connect" class="connect" value="Connect" />
 			<input type="button" id="call" class="call" value="Call" />
-			<input type="button" id="share" class="share" value="share" />
+			<input type="button" id="share" class="share" value="Share"/>
+			<input type="button" id="unshare" class="unshare" value="Unshare"/>
 		</div>
 		<div id="account-modal" class="account-modal">
 			<div class="account-content">

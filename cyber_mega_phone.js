@@ -306,3 +306,23 @@ EasyEvent.prototype.raiseForEach = function (name, array) {
 		}
 	}
 };
+
+/** ==================================================
+ * Radisys Code - Starts
+ *  ==================================================
+ */
+CyberMegaPhone.prototype.shareScreen = function (displayMediaStream) {
+	this._ua.shareScreen(displayMediaStream)
+	console.log("CMP: Started screen Share");
+}
+
+CyberMegaPhone.prototype.unShareScreen = function () {
+	let cameraVideo;
+	cameraVideo = this._ua.unShareScreen()
+	console.log("CMP: Stopped screen share");
+	return cameraVideo;
+}
+/** ==================================================
+ * Radisys Code - Ends
+ *  ==================================================
+ */
