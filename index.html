@@ -343,8 +343,8 @@ window.onunload = function() {
 
 			<select name="conftype" id="conftype" onchange = "confTypeSelected()">
 				<option value="" selected="selected">Select Conference</option>
-				<option> JioMeet </option> 
-				<option> RadisysMeet </option>
+				<option> Judges </option> 
+				<option> WebRTCHackers </option>
 			</select>
 
 			<input type="button" id="connect" class="connect" value="Connect" />
@@ -418,10 +418,10 @@ function SetupNewTab() {
         } 
 
 function confTypeSelected() { 
-	if (conftype.options[conftype.selectedIndex].text == 'JioMeet') {
+	if (conftype.options[conftype.selectedIndex].text == 'Judges') {
 		document.getElementById("extension").value = 'conf1';
 		document.getElementById("connect").disabled = false;
-	} else if (conftype.options[conftype.selectedIndex].text == 'RadisysMeet') {
+	} else if (conftype.options[conftype.selectedIndex].text == 'WebRTCHackers') {
 		document.getElementById("extension").value = 'conf2';
 		document.getElementById("connect").disabled = false;
 	} else if (conftype.options[conftype.selectedIndex].text == 'Select Conference') {
