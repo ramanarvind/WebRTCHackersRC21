@@ -32,7 +32,9 @@ window.onload = function() {
 	document.getElementById("accountRegister").checked = false;  // bgg
 	document.getElementById("extension").placeholder = "video-conference";
 	// document.getElementById("extension").value = "conf1";    // bgg
-
+    // bgg: Reset the drop down list to default
+    document.getElementById("conftype").options[0].selected = true; // bgg
+	
 	document.getElementById("connect").value = "Connect";
 	// bgg: Below line commented by me
 	// document.getElementById("connect").disabled = false;
