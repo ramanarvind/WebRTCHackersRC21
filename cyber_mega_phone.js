@@ -180,10 +180,36 @@ CyberMegaPhone.prototype.call = function (exten) {
 	if (!this._ua || !exten) {
 		return;
 	}
-
+	
+	/*
 	let options = {
 		'mediaConstraints': { 'audio': this.audio, 'video': this.video }
 	};
+	*/
+	
+	
+	let options = {
+		'mediaConstraints' : {
+								'audio': {
+									'mandatory': {
+									'echoCancellation': true,
+									'googAutoGainControl': true,
+									'googNoiseSuppression': true,
+									'googHighpassFilter': true,
+									'googTypingNoiseDetection': true,
+									},
+								}, 
+								'video': {
+									'mandatory': {
+										'maxWidth': 352,
+										'maxHeight': 288,
+										'maxFrameRate': 15,
+									},
+								},
+
+							}
+	}
+	
 
 	if (exten.startsWith('sip:')) {
 		this._rtc = this._ua.call(exten);

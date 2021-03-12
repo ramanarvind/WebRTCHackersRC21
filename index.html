@@ -76,8 +76,25 @@ window.onload = function() {
 				this.setAttribute("state", state == "mute" ? "unmute" : "mute");
 				this.value = state + " audio";
 				mute(video.srcObject, {audio: this.getAttribute("state") == "mute"});
+
+				// bgg: Set red as background colour of mute button if muted, else set green as bg colour.
+				if (this.getAttribute("state") == "mute") {
+					this.style.backgroundColor = 'Red';
+					this.style.color = 'White';
+					this.style.fontWeight = 'bold';
+				} else {
+					this.style.backgroundColor = 'Green';
+					this.style.color = 'White';
+					this.style.fontWeight = 'bold';					
+				}
 			};
 			controls.appendChild(muteAudio);
+
+			// Bgg: Mute local audio on joining.
+			if (video.srcObject.local == true) {
+				console.log("Bgg: createMediaControls: Muting local audio. Stream id: " + video.srcObject.id);
+				muteAudio.click();
+			}
 		}
 
 		let videoTracks = video.srcObject.getVideoTracks();
@@ -269,6 +286,9 @@ window.onload = function() {
 			document.getElementById("call").disabled = false;
 
 			document.getElementById("share").disabled = false;   // bgg
+
+			// bgg: Hide the 1st media-view
+			document.getElementById("media-views").childNodes[0].style.display = "none"; // bgg
 		});
 
 		phone.handle("streamRemoved", function (stream) {
@@ -347,6 +367,9 @@ window.onunload = function() {
 				<option value="" selected="selected">Select Conference</option>
 				<option> Judges </option> 
 				<option> WebRTCHackers </option>
+
+				<option> clone_conf1 </option>
+				<option> clone_conf2 </option>
 			</select>
 
 			<input type="button" id="connect" class="connect" value="Connect" />
@@ -431,6 +454,14 @@ function confTypeSelected() {
 		if (document.getElementById("connect").value == "Connect") {
 		   document.getElementById("connect").disabled = true;
 		}	
+	}
+
+	else if (conftype.options[conftype.selectedIndex].text == 'clone_conf1') {
+			document.getElementById("extension").value = '9120';
+			document.getElementById("connect").disabled = false;
+	} else if (conftype.options[conftype.selectedIndex].text == 'clone_conf2') {
+			document.getElementById("extension").value = '9121';
+			document.getElementById("connect").disabled = false;
 	}
 
 	console.log('Bgg : Selected conf = ' + conftype.options[conftype.selectedIndex].text + '; Extension = ' + document.getElementById("extension").value);
